@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.atteneder.gltfast": {
-      "version": "file:glTFast",
+      "version": "file:C:/Users/M.SANTOSH/Downloads/Unity Important Files/glTFast-openupm/glTFast-openupm",
       "depth": 0,
-      "source": "embedded",
+      "source": "local",
       "dependencies": {
         "com.unity.modules.jsonserialize": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
