@@ -14,6 +14,7 @@ public class GazeClickManager : MonoBehaviour
     public GameObject quitButtonResult;
 
     public SessionManager sessionManager;
+    public SoundManager soundManager;
 
     void Update()
     {
@@ -59,12 +60,19 @@ public class GazeClickManager : MonoBehaviour
 
         Debug.Log("🔥 Clicked: " + currentTarget.name);
 
+        // 🔘 PLAY CLICK SOUND HERE
+        if (soundManager != null)
+            soundManager.PlayClick();
+
         if (currentTarget == startButton)
             sessionManager.StartSession();
+
         else if (currentTarget == endButton)
             sessionManager.EndSession();
+
         else if (currentTarget == retryButton)
             sessionManager.StartSession();
+
         else if (currentTarget == quitButtonStart || currentTarget == quitButtonResult)
             sessionManager.QuitApp();
     }

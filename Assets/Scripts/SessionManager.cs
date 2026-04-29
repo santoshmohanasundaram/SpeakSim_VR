@@ -19,11 +19,13 @@ public class SessionManager : MonoBehaviour
     public TextMeshProUGUI volumeText;
     public TextMeshProUGUI feedbackText;
 
+    public AudienceManager audienceManager;
+    public SoundManager soundManager;
+
     public bool isSessionRunning = false;
 
     void Start()
     {
-        // Initial UI state
         startCanvas.SetActive(true);
         liveCanvas.SetActive(false);
         resultCanvas.SetActive(false);
@@ -33,23 +35,27 @@ public class SessionManager : MonoBehaviour
     {
         if (!isSessionRunning) return;
 
-        // 🔹 Live Feedback (clean, minimal)
         string feedback = "";
 
+        // 👁 Eye Contact (instant)
         if (eye.eyeContactPercent < 50)
-            feedback += "Look at audience\n";
+            feedback += "<color=#FF4444>Try to focus more on the audience</color>\n";
+        else
+            feedback += "<color=#00FF88>Good eye contact</color>\n";
 
+        // 🔊 Volume (instant)
         if (audioManager.currentVolume < 0.008f)
-            feedback += "Speak louder\n";
+            feedback += "<color=#FF4444>Try speaking a bit louder</color>\n";
+        else if (audioManager.currentVolume > 0.03f)
+            feedback += "<color=#FF4444>Try lowering your voice slightly</color>\n";
+        else
+            feedback += "<color=#00FF88>Your voice level is good</color>\n";
 
-        if (audioManager.currentVolume > 0.03f)
-            feedback += "Too loud\n";
-
-        if (head.avgMovement > 8)
-            feedback += "Stay steady\n";
-
-        if (feedback == "")
-            feedback = "Good performance";
+        // 🎯 Movement (instant)
+        if (head.avgMovement > 25)
+            feedback += "<color=#FF4444>Try to stay a bit more steady</color>\n";
+        else
+            feedback += "<color=#00FF88>Your posture looks good</color>\n";
 
         feedbackText.text = feedback;
     }
@@ -90,6 +96,13 @@ public class SessionManager : MonoBehaviour
         head.isTracking = false;
         audioManager.isTracking = false;
 
+        // 👏 Audience + sound
+        if (audienceManager != null)
+            audienceManager.StartClapping();
+
+        if (soundManager != null)
+            soundManager.PlayClap();
+
         // 🔹 Show results
         eyeText.text = "Eye Contact: " + eye.GetEyeContactPercentage() + "%";
         confidenceText.text = "Confidence: " + head.GetConfidenceScore() + "%";
@@ -103,10 +116,10 @@ public class SessionManager : MonoBehaviour
 
     public void QuitApp()
     {
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-        #else
-                Application.Quit();
-        #endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
