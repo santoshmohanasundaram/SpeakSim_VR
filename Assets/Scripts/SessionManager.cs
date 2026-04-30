@@ -26,6 +26,7 @@ public class SessionManager : MonoBehaviour
 
     void Start()
     {
+ 
         startCanvas.SetActive(true);
         liveCanvas.SetActive(false);
         resultCanvas.SetActive(false);
@@ -63,6 +64,7 @@ public class SessionManager : MonoBehaviour
     public void StartSession()
     {
         isSessionRunning = true;
+        
 
         // 🔥 Reset all data
         eye.ResetData();
@@ -108,7 +110,7 @@ public class SessionManager : MonoBehaviour
         confidenceText.text = "Confidence: " + head.GetConfidenceScore() + "%";
         speakingText.text = "Speaking: " + audioManager.GetSpeakingPercentage() + "%";
         volumeText.text = "Volume: " + audioManager.volumeFeedback;
-
+        
         // 🔹 Switch UI
         liveCanvas.SetActive(false);
         resultCanvas.SetActive(true);
